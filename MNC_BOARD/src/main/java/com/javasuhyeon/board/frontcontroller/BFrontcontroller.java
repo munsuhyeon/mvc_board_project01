@@ -11,8 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.javasuhyeon.board.command.BCommand;
 import com.javasuhyeon.board.command.BListcommand;
+import com.javasuhyeon.board.command.BModifyCommand;
+import com.javasuhyeon.board.command.BReply_viewCommand;
 import com.javasuhyeon.board.command.BWritecommand;
-
+import com.javasuhyeon.board.command.BContentCommand;
+import com.javasuhyeon.board.command.BDeleteCommand;
 /**
  * Servlet implementation class BFrontController
  */
@@ -65,10 +68,26 @@ public class BFrontcontroller extends HttpServlet {
 			command.excute(request, response);
 			viewPage = "list.jsp";
 			//  response.sendRediret(viewPage); 기존의 request 객체의 내용을 사용하지 못함
+		} else if(com.equals("/content_view.do")) {
+			command = new BContentCommand();
+			command.excute(request, response);
+			viewPage = "content_view.jsp";
+		} else if(com.equals("/modify.do")) {
+			command = new BModifyCommand();
+			command.excute(request, response);
+			viewPage = "list.do";
+		} else if(com.endsWith("/delete.do")) {
+			command = new BDeleteCommand();
+			command.excute(request, response);
+			viewPage = "list.do";
+		} else if(com.equals("/reply_view.do")) {
+			command = new BReply_viewCommand();
+			command.excute(request, response);
+			viewPage = "reply_view.jsp";
 		}
 			
 		RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);
-		dispatcher.forward(request, response);   
+		dispatcher.forward(request, response);
 		//기존 request 객체를 인수로 넣어서 forward 하므로 기존 request 객체의 내용을 사용할 수 있음
 	}
 
